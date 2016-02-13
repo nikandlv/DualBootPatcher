@@ -2,24 +2,29 @@ include(ExternalProject)
 
 include_directories(${OPENSSL_INCLUDE_DIR})
 
+if(MBP_ENABLE_TESTS)
+    include_directories(${GTEST_INCLUDE_DIRS})
+endif()
+
 set(MBSIGN_SOURCES
     src/mbsign.cpp
 )
 
 if(${MBP_BUILD_TARGET} STREQUAL desktop)
+    add_definitions(-DMB_DYNAMIC_LINK)
+
     add_library(mbsign SHARED ${MBSIGN_SOURCES})
+
+    target_compile_definitions(
+        mbsign
+        PRIVATE
+        -DMB_LIBRARY
+    )
 
     set_target_properties(
         mbsign
         PROPERTIES
         POSITION_INDEPENDENT_CODE 1
-    )
-
-    target_compile_definitions(
-        mbsign
-        PRIVATE
-        -DMB_DYNAMIC_LINK
-        -DMB_LIBRARY
     )
 
     if(NOT MSVC)
@@ -44,6 +49,26 @@ if(${MBP_BUILD_TARGET} STREQUAL desktop)
         RUNTIME DESTINATION ${LIB_INSTALL_DIR} COMPONENT Libraries
         #ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT Libraries
     )
+
+    if(MBP_ENABLE_TESTS)
+        add_executable(test_sign tests/test_sign.cpp)
+        target_link_libraries(test_sign
+            mbpio
+            mbsign
+            ${GTEST_BOTH_LIBRARIES}
+        )
+
+        if(NOT MSVC)
+            set_target_properties(test_sign PROPERTIES
+                CXX_STANDARD 11
+                CXX_STANDARD_REQUIRED 1
+                C_STANDARD 99
+                C_STANDARD_REQUIRED 1
+            )
+        endif()
+
+        add_test(test_sign test_sign)
+    endif()
 endif()
 
 set(MBSIGN_SOURCES_STR "")
