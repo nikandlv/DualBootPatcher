@@ -48,6 +48,9 @@ endif()
 # Qt5
 find_package(Qt5Core 5.3 REQUIRED)
 
+# OpenSSL
+find_package(OpenSSL REQUIRED)
+
 # Minizip
 add_subdirectory(external/minizip)
 

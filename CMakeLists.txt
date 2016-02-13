@@ -65,6 +65,7 @@ set(MBP_GLOBAL_INCLUDE_DIRS
     libmblog/include
     libmbpio/include
     libmbp/include
+    libmbsign/include
     libmbsparse/include
     libmbutil/include
 )
@@ -77,6 +78,7 @@ add_subdirectory(libmbcommon)
 add_subdirectory(libmblog)
 add_subdirectory(libmbpio)
 add_subdirectory(libmbp)
+add_subdirectory(libmbsign)
 add_subdirectory(libmbsparse)
 add_subdirectory(libmbutil)
 add_subdirectory(data)

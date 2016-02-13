@@ -1,0 +1,13 @@
+include @CMAKE_BINARY_DIR@/ndk/common.mk
+include @CMAKE_BINARY_DIR@/libmblog/Android.static.include.mk
+include @CMAKE_BINARY_DIR@/thirdparty/Android.mk
+
+LOCAL_PATH := @CMAKE_CURRENT_SOURCE_DIR@
+
+include $(CLEAR_VARS)
+LOCAL_SRC_FILES := @MBSIGN_SOURCES_STR@
+LOCAL_MODULE := libmbsign-static
+LOCAL_CFLAGS := $(mb_global_cflags)
+LOCAL_C_INCLUDES := $(mb_global_c_includes)
+LOCAL_STATIC_LIBRARIES := prebuilt-libmblog-static libcrypto
+include $(BUILD_STATIC_LIBRARY)
